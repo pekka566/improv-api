@@ -1,23 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
+require('dotenv').config();
 
 const MongoClient = require('mongodb').MongoClient;
 
-var db;
+let db;
+const port = process.env.PORT || 5000;
 
-MongoClient.connect(
-  'mongodb://improvuser:uusikattaus@ds229438.mlab.com:29438/improv_exercises?authSource=improv_exercises',
-  (err, client) => {
-    if (err) return console.log(err);
-    db = client.db('improv_exercises'); // whatever your database name is
-    app.listen(3000, () => {
-      console.log('listening on 3000');
-    });
-  }
-);
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+
+MongoClient.connect(process.env.MONGODB_URI, (err, client) => {
+  if (err) return console.log(err);
+  db = client.db('improv_exercises'); // whatever your database name is
+  app.listen(port, () => {
+    console.log('listening on... ' + port);
+  });
+});
 
 app.get('/', (req, res) => {
   db
