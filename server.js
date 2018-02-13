@@ -10,30 +10,20 @@ const port = process.env.PORT || 5000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
-MongoClient.connect(process.env.MONGODB_URI, (err, client) => {
-  if (err) return console.log(err);
-  db = client.db('improv_exercises'); // whatever your database name is
-  app.listen(port, () => {
-    console.log('listening on... ' + port);
-  });
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI);
+
+mongoose.connection.on('error', function() {
+  console.log('Could not connect to the database. Exiting now...');
+  process.exit();
 });
 
-app.get('/', (req, res) => {
-  db
-    .collection('quotes')
-    .find()
-    .toArray(function(err, results) {
-      console.log(results);
-      // send HTML file populated with quotes here
-    });
-  res.sendFile(__dirname + '/index.html');
+mongoose.connection.once('open', function() {
+  console.log('Successfully connected to the database');
 });
 
-app.post('/quotes', (req, res) => {
-  db.collection('quotes').save(req.body, (err, result) => {
-    if (err) return console.log(err);
+require('./routes.js')(app);
 
-    console.log('saved to database');
-    res.redirect('/');
-  });
+app.listen(port, function() {
+  console.log('Server is listening on port ' + port);
 });
