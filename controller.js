@@ -25,6 +25,7 @@ exports.create = function(req, res) {
 };
 
 exports.findAll = function(req, res) {
+  console.log('findAll');
   Exercise.find(function(err, exercises) {
     if (err) {
       res
