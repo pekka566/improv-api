@@ -8,11 +8,10 @@ let db;
 const port = process.env.PORT || 5000;
 
 const app = express();
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const cors = require('cors');
 app.use(cors());
@@ -29,7 +28,13 @@ mongoose.connection.once('open', function() {
   console.log('Successfully connected to the database');
 });
 
+const router = express.Router();
+router.get('/', function(req, res) {
+  res.json({ message: 'Welcome to our api!' });
+});
+app.use('/', router);
 require('./routes/exerciseRoutes.js')(app);
+require('./routes/userRoutes.js')(app);
 
 app.listen(port, function() {
   console.log('Server is listening on port ' + port);

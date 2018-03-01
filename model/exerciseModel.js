@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var ExerciseSchema = mongoose.Schema(
+const ExerciseSchema = mongoose.Schema(
   {
     Name: String,
     Description: String,
