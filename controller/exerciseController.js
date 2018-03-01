@@ -1,4 +1,4 @@
-const Exercise = require('./model.js');
+const Exercise = require('../model/exerciseModel.js');
 
 exports.create = function(req, res) {
   if (!req.body.content) {

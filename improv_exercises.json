@@ -82,5 +82,17 @@
     "Description": "Hi Harry, tell Harry, hi number x",
     "Notice": "",
     "Category": "warmups"
+  },
+  {
+    "Name": "Musiikkisoitin",
+    "Description": "Jokaisella oma ääni (instrumentti). Äänet seisovat rivissä. Yksi on kapelimestari ja johtaa orkesteria koskettamalla niitä soittimia jotka ovat soivat kosketuksen ajan.",
+    "Notice": "Esim 4 ääntä + kapelimestari",
+    "Category": "musical"
+  },
+  {
+    "Name": "Sanansyöttölaulu",
+    "Description": "Yksi laulaa, toiset syöttää sanoja",
+    "Notice": "Vaativa tekniikka!",
+    "Category": "musical"
   }
 ]
