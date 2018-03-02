@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const User = require('../model/userModel');
 
 exports.create = (req, res) => {
@@ -21,6 +23,38 @@ exports.create = (req, res) => {
         res
           .status(500)
           .send({ message: 'Some error ocuured while creating the user.' });
+      } else {
+        res.status(200).send({ username: user.username, email: user.email });
+      }
+    });
+  } else {
+    res.status(404).send({ message: 'Reruired data was missing!' });
+  }
+};
+
+//authenticate input against database
+const authenticateUser = (email, password, callback) => {
+  User.findOne({ email: email }).exec((err, user) => {
+    if (err) {
+      return callback(err);
+    } else if (!user) {
+      return callback(new Error('User not found.'));
+    }
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (result === true) {
+        return callback(null, user);
+      } else {
+        return callback();
+      }
+    });
+  });
+};
+
+exports.authenticate = (req, res) => {
+  if (req.body.email && req.body.password) {
+    authenticateUser(req.body.email, req.body.password, (error, user) => {
+      if (error || !user) {
+        res.status(404).send({ message: 'Wrong email or password.' });
       } else {
         res.status(200).send({ username: user.username, email: user.email });
       }
